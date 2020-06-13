@@ -29,11 +29,11 @@ void acceptWireProtocol(const std::string& host, int port, const std::string& un
     static_cast<void>(unixPath);
 #endif
     {
-        TCPSocketServer* const tcpServer = new TCPSocketServer(&protocolHandler);
-        server.reset(tcpServer);
-        tcpServer->listen(boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(host), port));
+        TCPSocketServer tcpServer(&protocolHandler);
+        server.reset(&tcpServer);
+        tcpServer.listen(boost::asio::ip::tcp::endpoint(boost::asio::ip::address::from_string(host), port));
         if (verbose)
-            std::clog << "Listening on " << tcpServer->listenEndpoint() << std::endl;
+          std::clog << "Listening on " << tcpServer.listenEndpoint() << std::endl;
     }
     server->acceptOnce();
 }
